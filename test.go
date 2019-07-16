@@ -10,22 +10,27 @@ import (
 
 type word [2]byte
 
+//type
+
 type MZHeader struct {
-	Magic              word
-	ExtraBytes         word
-	Pages              word
-	RelocationItems    word
-	HeaderSize         word
-	MinimumAllocation  word
-	MaximumAllocation  word
-	InitialSS          word
-	InitialSP          word
-	Checksum           word
-	InitialIP          word
-	InitialCS          word
-	RelocationTable    word
-	Overlay            word
-	OverlayInformation word
+	Magic             word
+	ExtraBytes        word
+	Pages             word
+	RelocationItems   word
+	HeaderSize        word
+	MinimumAllocation word
+	MaximumAllocation word
+	InitialSS         word
+	InitialSP         word
+	Checksum          word
+	InitialIP         word
+	InitialCS         word
+	RelocationTable   word
+	Overlay           word
+	e_res1            [4]word
+	Oemid             word
+	Oeminfo           word
+	e_res2            [10]word
 }
 
 type PEHeader struct {
@@ -59,7 +64,12 @@ func main() {
 	execute := EXEstruct{}
 	execute.MZHeader = &mzheader
 	execute.PEHeader = &peheader
-	binary.Read(bytes.NewReader(data), binary.BigEndian, &mzheader)
-	fmt.Println("magic: ", execute.Magic)
+	binary.Read(bytes.NewReader(data), binary.LittleEndian, &mzheader)
+	fmt.Println("Magic: ", execute.Magic)
+	fmt.Println("IP: ", execute.InitialIP)
+	fmt.Println("CS: ", execute.InitialCS)
+	fmt.Println("SP: ", execute.InitialSP)
+	fmt.Println("SS: ", execute.InitialSS)
+	fmt.Println("mzheader: ", mzheader)
 
 }
